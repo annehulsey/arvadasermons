@@ -1,2 +1,0 @@
-# arvadasermons
-Sermon archive
