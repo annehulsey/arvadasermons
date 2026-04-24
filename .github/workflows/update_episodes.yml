@@ -1,0 +1,44 @@
+name: Update Episodes
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # every dat at 6 hours
+  workflow_dispatch:        # allows manual run
+
+permissions:
+  contents: write           # required to commit back
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install deps
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run update script
+        run: |
+          python -m lib.update_new_episodes
+
+      - name: Commit & push if changed
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+          git add data/episodes.jsonl || true
+
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Update episodes"
+            git push
+          fi
