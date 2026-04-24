@@ -1,0 +1,252 @@
+[    
+    {
+        "date": "2020-01-07",
+        "title": "Series 1: Sermon 1",
+        "title_url": "http://milehighvineyard.libsyn.com/series-1-sermon-1",
+        "speaker": "Speaker 1",
+        "description": "Series 1 teaching, sermon 1",
+        "audio_url": "http://traffic.libsyn.com/series1_1.mp3",
+        "series": "Series 1",
+        "year": 2020
+    },
+    {
+        "date": "2020-01-14",
+        "title": "Series 1: Sermon 2",
+        "title_url": "http://milehighvineyard.libsyn.com/series-1-sermon-2",
+        "speaker": "Speaker 3",
+        "description": "Series 1 teaching, sermon 2",
+        "audio_url": "http://traffic.libsyn.com/series1_2.mp3",
+        "series": "Series 1",
+        "year": 2020
+    },
+    {
+        "date": "2020-01-21",
+        "title": "Series 1: Sermon 3",
+        "title_url": "http://milehighvineyard.libsyn.com/series-1-sermon-3",
+        "speaker": "Speaker 2",
+        "description": "Series 1 teaching, sermon 3",
+        "audio_url": "http://traffic.libsyn.com/series1_3.mp3",
+        "series": "Series 1",
+        "year": 2020
+    },
+    {
+        "date": "2020-01-28",
+        "title": "Series 1: Sermon 4",
+        "title_url": "http://milehighvineyard.libsyn.com/series-1-sermon-4",
+        "speaker": "Speaker 5",
+        "description": "Series 1 teaching, sermon 4",
+        "audio_url": "http://traffic.libsyn.com/series1_4.mp3",
+        "series": "Series 1",
+        "year": 2020
+    },
+    {
+        "date": "2020-02-04",
+        "title": "Series 1: Sermon 5",
+        "title_url": "http://milehighvineyard.libsyn.com/series-1-sermon-5",
+        "speaker": "Speaker 4",
+        "description": "Series 1 teaching, sermon 5",
+        "audio_url": "http://traffic.libsyn.com/series1_5.mp3",
+        "series": "Series 1",
+        "year": 2020
+    },
+    {
+        "date": "2021-03-03",
+        "title": "Series 2: Sermon 1",
+        "title_url": "http://milehighvineyard.libsyn.com/series-2-sermon-1",
+        "speaker": "Speaker 2",
+        "description": "Series 2 teaching, sermon 1",
+        "audio_url": "http://traffic.libsyn.com/series2_1.mp3",
+        "series": "Series 2",
+        "year": 2021
+    },
+    {
+        "date": "2021-03-10",
+        "title": "Series 2: Sermon 2",
+        "title_url": "http://milehighvineyard.libsyn.com/series-2-sermon-2",
+        "speaker": "Speaker 1",
+        "description": "Series 2 teaching, sermon 2",
+        "audio_url": "http://traffic.libsyn.com/series2_2.mp3",
+        "series": "Series 2",
+        "year": 2021
+    },
+    {
+        "date": "2021-03-17",
+        "title": "Series 2: Sermon 3",
+        "title_url": "http://milehighvineyard.libsyn.com/series-2-sermon-3",
+        "speaker": "Speaker 4",
+        "description": "Series 2 teaching, sermon 3",
+        "audio_url": "http://traffic.libsyn.com/series2_3.mp3",
+        "series": "Series 2",
+        "year": 2021
+    },
+    {
+        "date": "2021-03-24",
+        "title": "Series 2: Sermon 4",
+        "title_url": "http://milehighvineyard.libsyn.com/series-2-sermon-4",
+        "speaker": "Speaker 3",
+        "description": "Series 2 teaching, sermon 4",
+        "audio_url": "http://traffic.libsyn.com/series2_4.mp3",
+        "series": "Series 2",
+        "year": 2021
+    },
+    {
+        "date": "2021-03-31",
+        "title": "Series 2: Sermon 5",
+        "title_url": "http://milehighvineyard.libsyn.com/series-2-sermon-5",
+        "speaker": "Speaker 5",
+        "description": "Series 2 teaching, sermon 5",
+        "audio_url": "http://traffic.libsyn.com/series2_5.mp3",
+        "series": "Series 2",
+        "year": 2021
+    },
+    {
+        "date": "2021-04-07",
+        "title": "Series 2: Sermon 6",
+        "title_url": "http://milehighvineyard.libsyn.com/series-2-sermon-6",
+        "speaker": "Speaker 1",
+        "description": "Series 2 teaching, sermon 6",
+        "audio_url": "http://traffic.libsyn.com/series2_6.mp3",
+        "series": "Series 2",
+        "year": 2021
+    },
+    {
+        "date": "2021-04-14",
+        "title": "Series 2: Sermon 7",
+        "title_url": "http://milehighvineyard.libsyn.com/series-2-sermon-7",
+        "speaker": "Speaker 2",
+        "description": "Series 2 teaching, sermon 7",
+        "audio_url": "http://traffic.libsyn.com/series2_7.mp3",
+        "series": "Series 2",
+        "year": 2021
+    },
+    {
+        "date": "2022-05-05",
+        "title": "Series 3: Sermon 1",
+        "title_url": "http://milehighvineyard.libsyn.com/series-3-sermon-1",
+        "speaker": "Speaker 5",
+        "description": "Series 3 teaching, sermon 1",
+        "audio_url": "http://traffic.libsyn.com/series3_1.mp3",
+        "series": "Series 3",
+        "year": 2022
+    },
+    {
+        "date": "2022-05-12",
+        "title": "Series 3: Sermon 2",
+        "title_url": "http://milehighvineyard.libsyn.com/series-3-sermon-2",
+        "speaker": "Speaker 3",
+        "description": "Series 3 teaching, sermon 2",
+        "audio_url": "http://traffic.libsyn.com/series3_2.mp3",
+        "series": "Series 3",
+        "year": 2022
+    },
+    {
+        "date": "2022-05-19",
+        "title": "Series 3: Sermon 3",
+        "title_url": "http://milehighvineyard.libsyn.com/series-3-sermon-3",
+        "speaker": "Speaker 1",
+        "description": "Series 3 teaching, sermon 3",
+        "audio_url": "http://traffic.libsyn.com/series3_3.mp3",
+        "series": "Series 3",
+        "year": 2022
+    },
+    {
+        "date": "2022-05-26",
+        "title": "Series 3: Sermon 4",
+        "title_url": "http://milehighvineyard.libsyn.com/series-3-sermon-4",
+        "speaker": "Speaker 4",
+        "description": "Series 3 teaching, sermon 4",
+        "audio_url": "http://traffic.libsyn.com/series3_4.mp3",
+        "series": "Series 3",
+        "year": 2022
+    },
+    {
+        "date": "2023-06-09",
+        "title": "Series 4: Sermon 1",
+        "title_url": "http://milehighvineyard.libsyn.com/series-4-sermon-1",
+        "speaker": "Speaker 2",
+        "description": "Series 4 teaching, sermon 1",
+        "audio_url": "http://traffic.libsyn.com/series4_1.mp3",
+        "series": "Series 4",
+        "year": 2023
+    },
+    {
+        "date": "2023-06-16",
+        "title": "Series 4: Sermon 2",
+        "title_url": "http://milehighvineyard.libsyn.com/series-4-sermon-2",
+        "speaker": "Speaker 5",
+        "description": "Series 4 teaching, sermon 2",
+        "audio_url": "http://traffic.libsyn.com/series4_2.mp3",
+        "series": "Series 4",
+        "year": 2023
+    },
+    {
+        "date": "2023-06-23",
+        "title": "Series 4: Sermon 3",
+        "title_url": "http://milehighvineyard.libsyn.com/series-4-sermon-3",
+        "speaker": "Speaker 3",
+        "description": "Series 4 teaching, sermon 3",
+        "audio_url": "http://traffic.libsyn.com/series4_3.mp3",
+        "series": "Series 4",
+        "year": 2023
+    },
+    {
+        "date": "2023-06-30",
+        "title": "Series 4: Sermon 4",
+        "title_url": "http://milehighvineyard.libsyn.com/series-4-sermon-4",
+        "speaker": "Speaker 1",
+        "description": "Series 4 teaching, sermon 4",
+        "audio_url": "http://traffic.libsyn.com/series4_4.mp3",
+        "series": "Series 4",
+        "year": 2023
+    },
+    {
+        "date": "2023-07-07",
+        "title": "Series 4: Sermon 5",
+        "title_url": "http://milehighvineyard.libsyn.com/series-4-sermon-5",
+        "speaker": "Speaker 4",
+        "description": "Series 4 teaching, sermon 5",
+        "audio_url": "http://traffic.libsyn.com/series4_5.mp3",
+        "series": "Series 4",
+        "year": 2023
+    },
+    {
+        "date": "2023-07-14",
+        "title": "Series 4: Sermon 6",
+        "title_url": "http://milehighvineyard.libsyn.com/series-4-sermon-6",
+        "speaker": "Speaker 2",
+        "description": "Series 4 teaching, sermon 6",
+        "audio_url": "http://traffic.libsyn.com/series4_6.mp3",
+        "series": "Series 4",
+        "year": 2023
+    },
+    {
+        "date": "2024-08-04",
+        "title": "Series 5: Sermon 1",
+        "title_url": "http://milehighvineyard.libsyn.com/series-5-sermon-1",
+        "speaker": "Speaker 3",
+        "description": "Series 5 teaching, sermon 1",
+        "audio_url": "http://traffic.libsyn.com/series5_1.mp3",
+        "series": "Series 5",
+        "year": 2024
+    },
+    {
+        "date": "2024-08-11",
+        "title": "Series 5: Sermon 2",
+        "title_url": "http://milehighvineyard.libsyn.com/series-5-sermon-2",
+        "speaker": "Speaker 1",
+        "description": "Series 5 teaching, sermon 2",
+        "audio_url": "http://traffic.libsyn.com/series5_2.mp3",
+        "series": "Series 5",
+        "year": 2024
+    },
+    {
+        "date": "2024-08-18",
+        "title": "Series 5: Sermon 3",
+        "title_url": "http://milehighvineyard.libsyn.com/series-5-sermon-3",
+        "speaker": "Speaker 5",
+        "description": "Series 5 teaching, sermon 3",
+        "audio_url": "http://traffic.libsyn.com/series5_3.mp3",
+        "series": "Series 5",
+        "year": 2024
+    }
+]
