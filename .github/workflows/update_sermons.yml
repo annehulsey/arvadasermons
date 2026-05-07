@@ -1,4 +1,4 @@
-name: Update Episodes
+name: Update Sermons
 
 on:
   schedule:
