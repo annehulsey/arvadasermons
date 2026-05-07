@@ -27,18 +27,18 @@ jobs:
 
       - name: Run update script
         run: |
-          python -m lib.update_new_episodes
+          python -m lib.update_new_sermons
 
       - name: Commit & push if changed
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
 
-          git add data/episodes.jsonl || true
+          git add data/sermons.jsonl || true
 
           if git diff --cached --quiet; then
             echo "No changes"
           else
-            git commit -m "Update episodes"
+            git commit -m "Update sermons"
             git push
           fi

@@ -1,7 +1,7 @@
 from pathlib import Path
 import json
 
-from .paths import EPISODES_PATH
+from .paths import SERMONS_PATH
 from .libsyn_scrape import build_backfill
 
 
@@ -15,12 +15,12 @@ def save_fresh_jsonl(data, path: Path):
 
 def main():
     # --- SAFETY: only do this in backfill mode ---
-    if EPISODES_PATH.exists():
-        EPISODES_PATH.unlink()  # delete file
+    if SERMONS_PATH.exists():
+        SERMONS_PATH.unlink()  # delete file
 
     data = build_backfill()
 
-    save_fresh_jsonl(data, EPISODES_PATH)
+    save_fresh_jsonl(data, SERMONS_PATH)
 
 
 if __name__ == "__main__":

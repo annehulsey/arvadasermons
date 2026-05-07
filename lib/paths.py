@@ -4,4 +4,4 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 DATA.mkdir(exist_ok=True)
 
-EPISODES_PATH = DATA / "episodes.jsonl"
+SERMONS_PATH = DATA / "sermons.jsonl"

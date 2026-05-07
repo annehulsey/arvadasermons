@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 from pathlib import Path
 
-from .paths import EPISODES_PATH
+from .paths import SERMONS_PATH
 
 URL_BASE_PAGE = "http://milehighvineyard.libsyn.com/page/{}/size/20"
 
@@ -405,9 +405,9 @@ def episode_key(ep):
 # APPEND ONLY STORAGE
 # ----------------------------
 def append_episode(ep):
-    EPISODES_PATH.parent.mkdir(parents=True, exist_ok=True)
+    SERMONS_PATH.parent.mkdir(parents=True, exist_ok=True)
 
-    with open(EPISODES_PATH, "a") as f:
+    with open(SERMONS_PATH, "a") as f:
         f.write(json.dumps(ep, ensure_ascii=False) + "\n")
 
 # ----------------------------
@@ -423,11 +423,11 @@ def build_backfill(max_pages=100, max_empty_pages=5):
     for page in range(1, max_pages + 1):
 
         soup = fetch_page(page)
-        page_episodes = parse_libsyn_page(soup)
+        page_sermons = parse_libsyn_page(soup)
 
         new_count = 0
 
-        for ep in page_episodes:
+        for ep in page_sermons:
             key = episode_key(ep)
 
             if not key or key in seen:
@@ -438,7 +438,7 @@ def build_backfill(max_pages=100, max_empty_pages=5):
             results.append(ep)
             new_count += 1
 
-        print(f"Page {page}: +{new_count} new episodes")
+        print(f"Page {page}: +{new_count} new sermons")
 
         # --- empty page tracking ---
         if new_count == 0:
@@ -462,7 +462,7 @@ def build_backfill(max_pages=100, max_empty_pages=5):
 # ----------------------------
 #  LOAD DATASET
 # ----------------------------
-def load_existing_keys(path=EPISODES_PATH):
+def load_existing_keys(path=SERMONS_PATH):
     seen = set()
 
     if not os.path.exists(path):
@@ -483,19 +483,19 @@ def load_existing_keys(path=EPISODES_PATH):
     return seen
 
 
-def update_new_episodes(max_pages=10, max_known_streak=3):
+def update_new_sermons(max_pages=10, max_known_streak=3):
     """
-    Incrementally fetch new episodes from Libsyn.
+    Incrementally fetch new sermons from Libsyn.
 
     Safer stopping behavior:
     - Only increments known-page streak if an ENTIRE page is new-free
-    - Resets streak immediately when ANY new episode is found
+    - Resets streak immediately when ANY new sermon is found
     - Prevents premature stopping from interleaved ordering
     """
 
     seen = load_existing_keys()
 
-    print("Checking for new episodes from page 1...")
+    print("Checking for new sermons from page 1...")
 
     consecutive_known_pages = 0
     total_new = 0
@@ -503,15 +503,15 @@ def update_new_episodes(max_pages=10, max_known_streak=3):
     for page in range(1, max_pages + 1):
 
         soup = fetch_page(page)
-        page_episodes = parse_libsyn_page(soup)
+        page_sermons = parse_libsyn_page(soup)
 
-        if not page_episodes:
-            print(f"Page {page}: no episodes found, stopping")
+        if not page_sermons:
+            print(f"Page {page}: no sermons found, stopping")
             break
 
         new_count = 0
 
-        for ep in page_episodes:
+        for ep in page_sermons:
             key = episode_key(ep)
 
             if not key:
@@ -520,7 +520,7 @@ def update_new_episodes(max_pages=10, max_known_streak=3):
             if key in seen:
                 continue
 
-            # NEW episode found
+            # NEW sermon found
             seen.add(key)
             append_episode(ep)
             new_count += 1
@@ -532,10 +532,10 @@ def update_new_episodes(max_pages=10, max_known_streak=3):
 
         if new_count == 0:
             consecutive_known_pages += 1
-            print(f"Page {page}: 0 new episodes (known streak = {consecutive_known_pages})")
+            print(f"Page {page}: 0 new sermons (known streak = {consecutive_known_pages})")
         else:
             consecutive_known_pages = 0
-            print(f"Page {page}: +{new_count} new episodes")
+            print(f"Page {page}: +{new_count} new sermons")
 
         # Stop only after several FULLY-known pages in a row
         if consecutive_known_pages >= max_known_streak:
@@ -544,5 +544,5 @@ def update_new_episodes(max_pages=10, max_known_streak=3):
 
         time.sleep(0.5)
 
-    print(f"Update complete: {total_new} new episodes added")
+    print(f"Update complete: {total_new} new sermons added")
 

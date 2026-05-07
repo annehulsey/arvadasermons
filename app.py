@@ -3,7 +3,7 @@ import pandas as pd
 import json
 from datetime import datetime
 
-from lib.paths import EPISODES_PATH
+from lib.paths import SERMONS_PATH
 
 DROP_BONUS_EPISODES = True
 DROP_DEVOTIONALS = True
@@ -14,7 +14,7 @@ DROP_DEVOTIONALS = True
 @st.cache_data
 def load_data():
     data = []
-    with open(EPISODES_PATH, "r", encoding="utf-8") as f:
+    with open(SERMONS_PATH, "r", encoding="utf-8") as f:
         for line in f:
             data.append(json.loads(line))
     data = pd.DataFrame(data)
