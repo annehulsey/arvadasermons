@@ -18,7 +18,7 @@ def main():
     if EPISODES_PATH.exists():
         EPISODES_PATH.unlink()  # delete file
 
-    data = build_backfill(max_pages=100)
+    data = build_backfill()
 
     save_fresh_jsonl(data, EPISODES_PATH)
 

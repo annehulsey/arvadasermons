@@ -11,7 +11,34 @@ from .paths import EPISODES_PATH
 
 URL_BASE_PAGE = "http://milehighvineyard.libsyn.com/page/{}/size/20"
 
+TITLE_PREFIXES = {"The", "This", "That", "Sunday", "Pastor", "Pator", "Dr"}
+SPEAKER_ANCHORS = {"Pastor", "Guest speaker"}
+KNOWN_SPEAKERS = {"Dave Donaldson",
+                  "Jay Pathak", 
+                  "Nicole McAdoo-Popovich",
+                  "Noelle Shearer", 
+                  "Preston Ulmer", 
+                  "Rob Morris",
+                  "Rick Love and Imam Shemsadeen"
+                  }
+FIRST_NAME_SPEAKERS = {"Becca and Jay": "Becca Knudsen and Jay Pathak",
+                       "Jay": "Jay Pathak",
+                       "Anabeth": "Anabeth Morgan",
+                       "Corey": "Corey Garris"
+                       }
+SPEAKER_MISSPELLINGS = {"batisms, november": "Jay Pathak",
+                        "bel folman": "Ben Folman",
+                        "becca knusden": "Becca Knudsen",
+                        "cory garris": "Corey Garris",
+                        'grace you have been saved"': "Jay Pathak",
+                        "dr": "Ray Bakke"
+                        }
+
+SERIES_MISSPELLINGS = {"Better Choices Better Life": "Better Choices, Better Life"}
+
 FILLER_DESCRIPTION = "Thank you for joining our online service"
+FILLER_CHURCH = "Mile High Vineyard"
+MAX_SERIES_COUNTER = 20
 
 # ----------------------------
 # PAGE SCRAPING
@@ -30,17 +57,40 @@ def fetch_page(page_num, retries=2):
             time.sleep(2)
 
 
+
+def capitalize(s):
+    def repl(match):
+        return match.group(1) + match.group(2).upper()
+
+    # capitalize after start OR after space/( /" but NOT after apostrophe
+    return re.sub(r'(^|[\s\(\["])([a-z])', repl, s.lower())
+
+
 def normalize_series(series: str):
     if not series:
         return series
 
-    parts = series.strip().split()
+    series = series.replace(":", "").replace(".", "").strip()
 
-    # check if last token is an integer
-    if parts and parts[-1].isdigit():
-        return " ".join(parts[:-1])
+    # remove Week or Part
+    match = re.search(
+        r"(?:week|part)?\s*(\d+)$",
+        series,
+        flags=re.IGNORECASE
+    )
 
-    return series.title()
+    # remove final N
+    if match:
+        n = int(match.group(1))
+
+        if n <= MAX_SERIES_COUNTER:
+            series = series[:match.start()]
+
+    series = capitalize(series.strip(" -—–:,"))
+
+    series = SERIES_MISSPELLINGS.get(series, series)
+
+    return series
 
 
 def resolve_description(desc_el):
@@ -51,40 +101,212 @@ def resolve_description(desc_el):
     return description
 
 
+def extract_after_speaker_anchor(desc, anchors):
+    for anchor_word in anchors:
+        anchor = re.search(
+            rf"\b{re.escape(anchor_word)}\b[\s,]+",
+            desc,
+            flags=re.IGNORECASE
+        )
 
-def parse_title(title):
-    if not title:
-        return {}
+        if anchor:
+            start = anchor.end()
+            segment = desc[start:].lstrip(" ,.-")
 
-    title_splits = [p.strip() for p in title.split("|") if p.strip()]
+            match = re.match(
+                r"([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",
+                segment
+            )
 
-    if not title_splits:
-        return {}
+            if match:
+                return match.group(1).strip()
+
+    return None
+
+def resolve_known_speaker(desc: str):
+    if not desc:
+        return None
+
+    # normalize whitespace once
+    desc = re.sub(r"\s+", " ", desc).strip()
+
+    # --- 1. full known speaker match ---
+    for name in KNOWN_SPEAKERS:
+        if re.search(rf"\b{re.escape(name)}\b", desc):
+            return name
+
+    # --- 2. alias / first-name mappings ---
+    for alias, full_name in FIRST_NAME_SPEAKERS.items():
+        if re.search(rf"\b{re.escape(alias)}\b", desc):
+            return full_name
+
+    # --- 3. fallback: single-word alias match (very weak) ---
+    words = desc.split()
+    if words:
+        first = words[0].rstrip(",.:;")
+
+        if first in FIRST_NAME_SPEAKERS:
+            return FIRST_NAME_SPEAKERS[first]
+
+    return None
+
+def fix_speaker_spelling(speaker: str):
+    if not speaker:
+        return speaker
+
+    speaker_clean = " ".join(speaker.split()).strip()
+
+    return SPEAKER_MISSPELLINGS.get(speaker_clean.lower(), speaker_clean)
+
+
+def infer_speaker(speaker, description):
+    if speaker is not None:
+        return speaker
+    
+    if not description:
+        return '[not available]'
+    
+    desc = re.sub(r"\s+", " ", description).strip()   
+    
+
+    # --- 1. structured anchors (guest speaker / pastor) ---
+    name = extract_after_speaker_anchor(desc, SPEAKER_ANCHORS)
+    if name:
+        return name
+
+    # --- 2. "XXX by <speaker>" OR "by <speaker>" ---
+    anchor = re.search(r"\bby\s+", desc, flags=re.IGNORECASE)
+
+    if anchor:
+        start = anchor.end()
+
+        match = re.match(
+            r"([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)",
+            desc[start:]
+        )
+        if match:
+            return match.group(1).strip()
+
+    # --- 3. First two words are a capitalized name ---
+    words = desc.split()
+
+    # strip leading titles
+    while words and words[0].rstrip(".") in TITLE_PREFIXES:
+        words = words[1:]
+
+    # now re-evaluate
+    if len(words) >= 2:
+        first, second = words[0], words[1]
+
+        if first.istitle() and second.istitle():
+            return f"{first} {second}"
+        
+
+    # --- 4. sweep known speakers ---- 
+    speaker = resolve_known_speaker(desc)
+    if speaker:
+        return speaker
+
+    return '[not available]'
+
+
+def parse_line_splits(title_splits):
+
+    title_n_splits = len(title_splits)
 
     series = title_splits[0].lower().strip()
     series = normalize_series(series)
 
-    has_full_structure = len(title_splits) >= 4
-
-    church = title_splits[-1] if has_full_structure else None
-    speaker = title_splits[-2] if has_full_structure else None
-
-    if has_full_structure:
-        episode_label = " | ".join(title_splits[1:-2])
+    # remove Mile High Vineyard
+    if title_splits[-1]==FILLER_CHURCH:
+        title_splits = title_splits[:-1]
+    
+    if len(title_splits) > 1:
+        speaker = title_splits[-1]
+        episode_label = " | ".join(title_splits[1:-1])
     else:
-        episode_label = " | ".join(title_splits[1:]) if len(title_splits) > 1 else None
+        speaker = '[not available]'
+        episode_label = None
 
     return {
-        "title_n_splits": len(title_splits),
+        "title_n_splits": title_n_splits,
         "series": series,
         "episode_label": episode_label,
         "speaker": speaker,
-        "church": church,
+    }
+
+def parse_colon_splits(title, description):
+    # split off speaker (case-insensitive "by", including "- by")
+    parts = re.split(
+        r"\s*[-—–]?\s+by\s+",
+        title,
+        flags=re.IGNORECASE
+    )
+
+    if len(parts) > 1:
+        main = " by ".join(parts[:-1]).rstrip(" -—–:")
+        speaker = parts[-1]
+    else:
+        main = title
+        speaker = None
+
+    parts = re.split(
+        r"\s*[-—–]?\s+by\s+",
+        title,
+        flags=re.IGNORECASE
+    )
+
+    if len(parts) > 1:
+        main = " by ".join(parts[:-1]).rstrip(" -—–:")
+        speaker = parts[-1]
+    else:
+        main = title
+        speaker = None
+
+    # split series and episode
+    if ":" in main:
+        series, episode = main.split(":", 1)
+    else:
+        series, episode = main, None
+    series = normalize_series(series)
+
+    speaker = infer_speaker(speaker, description)
+
+    return {
+        "title_n_splits": 1,
+        "series": series.strip(),
+        "episode_label": episode.strip() if episode else None,
+        "speaker": speaker.strip() if speaker else None,
     }
 
 
+
+def parse_title(item):
+    title = item.get("title")
+    if not title:
+        return {}
+
+    title_splits = [p.strip() for p in title.split("|") if p.strip()]
+    title_n_splits = len(title_splits)
+
+    if not title_splits:
+        return {}
+
+    if title_n_splits > 1:
+        return parse_line_splits(title_splits)
+    
+    else:
+        return parse_colon_splits(title, item.get("description"))
+
+
+
 def enrich_metadata(item):
-    item.update(parse_title(item.get("title")))
+    item.update(parse_title(item))
+
+    # normalize speaker if it exists
+    if "speaker" in item:
+        item["speaker"] = fix_speaker_spelling(item["speaker"])
+
     return item
 
 
@@ -191,10 +413,12 @@ def append_episode(ep):
 # ----------------------------
 # BACKFILL
 # ----------------------------
-def build_backfill(max_pages=100):
+def build_backfill(max_pages=100, max_empty_pages=5):
 
     seen = set()
     results = []
+
+    empty_streak = 0
 
     for page in range(1, max_pages + 1):
 
@@ -215,6 +439,19 @@ def build_backfill(max_pages=100):
             new_count += 1
 
         print(f"Page {page}: +{new_count} new episodes")
+
+        # --- empty page tracking ---
+        if new_count == 0:
+            empty_streak += 1
+            print(f"Empty page streak: {empty_streak}")
+
+        else:
+            empty_streak = 0  # reset if we find anything new
+
+        # --- stop condition ---
+        if empty_streak >= max_empty_pages:
+            print(f"Hit {max_empty_pages} consecutive empty pages — stopping early")
+            break
 
         time.sleep(0.5)
 
