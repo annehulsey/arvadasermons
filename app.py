@@ -8,6 +8,8 @@ from lib.paths import SERMONS_PATH
 DROP_BONUS_EPISODES = True
 DROP_DEVOTIONALS = True
 
+TEXT_COLUMNS = ["description", "title", "series", "speaker", "episode_label"]
+
 # =========================
 # DATA LOADING (PLACEHOLDER)
 # =========================
@@ -27,6 +29,11 @@ def load_data():
     return data
 
 df = load_data()
+
+
+for col in TEXT_COLUMNS:
+    if col in df.columns:
+        df[col] = df[col].fillna("").astype(str)
 
 
 
@@ -70,7 +77,7 @@ st.subheader("Filtering")
 
 search = st.text_input("Search title, speaker, description, series")
 
-years = sorted(df["year"].dropna().unique())
+years = sorted(df["year"].dropna().unique(),reverse=True)
 year_filter = st.selectbox("Year", ["All"] + list(years))
 
 speakers = sorted(df["speaker"].dropna().unique())
